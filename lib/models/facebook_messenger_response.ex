@@ -42,8 +42,14 @@ defmodule FacebookMessenger.Response do
     messaging =
       entries
       |> get_messaging_struct
-      |> Enum.map(&( &1 |> Map.get(:message)
-      |> Map.get(:text)))
+      |> Enum.map(fn(messaging) ->
+        messaging
+        |> Map.get(:message)
+        |> (fn
+          nil -> nil
+          message -> Map.get(message, :text)
+        end).()
+      end)
   end
 
   @doc """
