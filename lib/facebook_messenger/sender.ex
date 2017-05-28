@@ -46,6 +46,16 @@ defmodule FacebookMessenger.Sender do
     res
   end
 
+  @spec request_location(String.t, String.t) :: HTTPotion.Response.t
+  def request_location(recepient, location_msg) do
+    res = manager.post(
+      url: url,
+      body: location_reply(recepient, location_msg) |> to_json
+    )
+    Logger.info("response from FB #{inspect(res)}")
+    res
+  end
+
   @doc """
   creates a payload to send to facebook
 
@@ -94,6 +104,16 @@ defmodule FacebookMessenger.Sender do
             }]
           }
         }
+      }
+    }
+  end
+
+  def location_reply(recepient, location_msg) do
+    %{
+      recipient: %{id: recepient},
+      message: %{
+        text: location_msg,
+        quick_replies: [%{content_type: "location"}]
       }
     }
   end
