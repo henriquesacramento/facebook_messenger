@@ -36,6 +36,16 @@ defmodule FacebookMessenger.Sender do
     res
   end
 
+  @spec send_login_button(String.t, String.t) :: HTTPotion.Response.t
+  def send_login_button(recepient, callback_url) do
+    res = manager.post(
+      url: url,
+      body: login_button_payload(recepient, callback_url) |> to_json
+    )
+    Logger.info("response from FB #{inspect(res)}")
+    res
+  end
+
   @doc """
   creates a payload to send to facebook
 
@@ -63,6 +73,25 @@ defmodule FacebookMessenger.Sender do
           type: "image",
           payload: %{
             url: image_url
+          }
+        }
+      }
+    }
+  end
+
+  def login_button_payload(recepient, callback_url) do
+    %{
+      recipient: %{id: recepient},
+      message: %{
+        attachment: %{
+          type: "template",
+          payload: %{
+            template_type: "button",
+            text: "Inicia sesion",
+            buttons: [%{
+              type: "account_link",
+              url: callback_url
+            }]
           }
         }
       }
