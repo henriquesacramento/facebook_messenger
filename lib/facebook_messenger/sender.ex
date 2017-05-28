@@ -79,7 +79,7 @@ defmodule FacebookMessenger.Sender do
     }
   end
 
-  def login_button_payload(recepient, callback_url) do
+  def login_button_payload(recepient, login_msg, callback_url) do
     %{
       recipient: %{id: recepient},
       message: %{
@@ -87,7 +87,7 @@ defmodule FacebookMessenger.Sender do
           type: "template",
           payload: %{
             template_type: "button",
-            text: "Inicia sesion",
+            text: login_msg,
             buttons: [%{
               type: "account_link",
               url: callback_url
