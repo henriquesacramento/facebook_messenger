@@ -36,11 +36,11 @@ defmodule FacebookMessenger.Sender do
     res
   end
 
-  @spec send_login_button(String.t, String.t) :: HTTPotion.Response.t
-  def send_login_button(recepient, callback_url) do
+  @spec send_login_button(String.t, String.t, String.t) :: HTTPotion.Response.t
+  def send_login_button(recepient, login_msg, callback_url) do
     res = manager.post(
       url: url,
-      body: login_button_payload(recepient, callback_url) |> to_json
+      body: login_button_payload(recepient, login_msg, callback_url) |> to_json
     )
     Logger.info("response from FB #{inspect(res)}")
     res
