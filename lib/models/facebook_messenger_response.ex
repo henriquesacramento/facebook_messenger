@@ -13,7 +13,7 @@ defmodule FacebookMessenger.Response do
   @spec parse(map) :: FacebookMessenger.Response.t
 
   def parse(param) when is_map(param) do
-    decoder = param |> get_parser |> decoding_map
+    decoder = param |> _get_parser |> decoding_map
     Poison.Decode.decode(param, as: decoder)
   end
 
@@ -22,7 +22,7 @@ defmodule FacebookMessenger.Response do
   """
   @spec parse(String.t) :: FacebookMessenger.Response.t
   def parse(param) when is_binary(param) do
-    decoder = param |> get_parser |> decoding_map
+    decoder = param |> _get_parser |> decoding_map
     Poison.decode!(param, as: decoder)
   end
 
@@ -67,14 +67,14 @@ defmodule FacebookMessenger.Response do
     |> hd
   end
 
-  defp get_parser(param) when is_binary(param) do
+  defp __get_parser(param) when is_binary(param) do
     cond do
       String.match?(param, @postback_regex) -> postback_parser
       true -> text_message_parser
     end
   end
 
-  defp _get_parser(%{"entry" => entries} = param) when is_map(param) do
+  defp __get_parser(%{"entry" => entries} = param) when is_map(param) do
     messaging = entries |> get_messaging_struct("messaging") |> hd
 
     cond do
