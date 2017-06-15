@@ -74,7 +74,7 @@ defmodule FacebookMessenger.Response do
     end
   end
 
-  defp get_parser(%{"entry" => entries} = param) when is_map(param) do
+  defp _get_parser(%{"entry" => entries} = param) when is_map(param) do
     messaging = entries |> get_messaging_struct("messaging") |> hd
 
     cond do
