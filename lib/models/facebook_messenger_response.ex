@@ -67,14 +67,14 @@ defmodule FacebookMessenger.Response do
     |> hd
   end
 
-  defp __get_parser(param) when is_binary(param) do
+  defp _get_parser(param) when is_binary(param) do
     cond do
       String.match?(param, @postback_regex) -> postback_parser
       true -> text_message_parser
     end
   end
 
-  defp __get_parser(%{"entry" => entries} = param) when is_map(param) do
+  defp _get_parser(%{"entry" => entries} = param) when is_map(param) do
     messaging = entries |> get_messaging_struct("messaging") |> hd
 
     cond do
